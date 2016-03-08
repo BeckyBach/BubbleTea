@@ -1,5 +1,7 @@
 int numBobas = 10;
 int numBombs = 3;
+int score = 0;
+int health = 3;
 
 PImage cup;
 
@@ -61,20 +63,36 @@ void draw() {
     if (yPosBobas[i] > 800) {
       yPosBobas[i] = randomY();
     }
+    
+    //if collide with top of basket increment score and reset pos
+    if (ballPaddleCollide(xPosBobas[i], yPosBobas[i], 50, mouseX, 510, 107, 50)) {
+      yPosBobas[i] = randomY();
+      score++;
+    }
   }  
   
   for (int i = 0; i < bombs.length; i++) {
     image(bombs[i], xPosBombs[i], yPosBombs[i], 50, 60);
     yPosBombs[i] += velocityY;
     
-    //when bobas hit the bottom, reinit bobas
+    //when bobas hit the bottom, reinit as
     if (yPosBombs[i] > 800) {
       yPosBombs[i] = randomY();
+    }
+    //if collide with top of basket decrement lives
+    if (ballPaddleCollide(xPosBombs[i], yPosBombs[i], 50, mouseX, 510, 107, 50)) {
+      yPosBombs[i] = randomY();
+      health--;
     }
   }  
   
   fill(255,0,0);
   image(cup, mouseX, 500, 107, 178); //cup
+  
+  //display score and health
+  fill(255);
+  text("Score:" + score, 10, 10);
+  text("Health:" + health, 10, 20);
 }
 
 //return random value between width
@@ -85,4 +103,30 @@ float randomX() {
 //return random value for y position
 float randomY() {
   return random(-800, 0);
+}
+
+//
+// ballX: is the X position of the ball
+// ballY: is the Y position of the ball
+// ballSize: is the size of the ball
+// paddleX/Y: is the X/Y position of the paddle
+// paddleWidth/Height: are the width/Height of the paddle
+//
+// This function returns the condition if the ball and the
+// paddle has collided.
+//
+boolean ballPaddleCollide(float ballX, float ballY, float
+ballSize, float paddleX, float paddleY, float paddleWidth,
+float paddleHeight) {
+  float paddleMaxX = paddleX + paddleWidth;
+  if (ballX < paddleMaxX) {
+    float ballMaxX = ballX + ballSize;
+    if (paddleX < ballMaxX) {
+      float paddleMaxY = paddleY + paddleHeight;
+      if (ballY < paddleMaxY) {
+        return (paddleY < (ballY + ballSize));
+      }
+    }
+  }
+  return false;
 }
