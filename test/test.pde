@@ -1,6 +1,8 @@
 int numBobas = 10;
 int numBombs = 3;
 
+PImage cup;
+
 PImage[] bobas = new PImage[numBobas];
 PImage[] bombs = new PImage[numBombs];
 
@@ -17,14 +19,16 @@ void setup() {
   size(450,750);
   frameRate(30);
   
+  cup = loadImage("cup.png");
+  
   //load images to bobas
   for (int i = 0; i < bobas.length; i++) {
-    bobas[i] = loadImage("ball.jpg");
+    bobas[i] = loadImage("boba.png");
   }
   
   //load images to bombs
   for (int i = 0; i < bombs.length; i++) {
-    bombs[i] = loadImage("bomb.jpg");
+    bombs[i] = loadImage("bomb.png");
   }
 }
 
@@ -45,7 +49,7 @@ void initBalls() {
 }
 
 void draw() {
-  background(0);
+  background(loadImage("bg.jpg"));
   
   if (start == false) initBalls();
     
@@ -60,7 +64,7 @@ void draw() {
   }  
   
   for (int i = 0; i < bombs.length; i++) {
-    image(bombs[i], xPosBombs[i], yPosBombs[i], 50, 50);
+    image(bombs[i], xPosBombs[i], yPosBombs[i], 50, 60);
     yPosBombs[i] += velocityY;
     
     //when bobas hit the bottom, reinit bobas
@@ -70,7 +74,7 @@ void draw() {
   }  
   
   fill(255,0,0);
-  rect(mouseX, 600, 107, 178); //cup
+  image(cup, mouseX, 500, 107, 178); //cup
 }
 
 //return random value between width
