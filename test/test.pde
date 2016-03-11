@@ -101,7 +101,7 @@ void draw() {
   if (isGameOver == false) {
     background(loadImage("bg.jpg"));
     cup = loadImage("cup.png");
-    velocityY = 5;
+    velocityY = 8;
     
     //display score and health
     fill(255);
